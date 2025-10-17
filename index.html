@@ -28,10 +28,19 @@ color: #000000;
 }
 a{color:inherit;text-decoration:none}header{position:sticky;top:0;z-index:10;background:rgba(15,17,20,.75);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--line)}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:10px 16px}.row{display:flex;gap:var(--gap);flex-wrap:wrap;align-items:center}.grow{flex:1}.logo{height:36px;width:auto}.sub{opacity:.8;font-size:.9rem}
+
+/* 🟢 การปรับปรุงสำคัญสำหรับ Mobile: Input/Select เต็มความกว้าง */
 input,select{width:100%;padding:10px 12px;background:#0d1013;border:1px solid var(--line);border-radius:12px;color:var(--white)}select option{color:#0d1013}
 .banner{width:100%;height:auto;border-bottom:1px solid var(--line);display:block}.notice{max-width:var(--maxw);margin:12px auto 0;padding:0 16px;color:var(--muted)}
 .notice .chip{display:inline-flex;align-items:center;gap:8px;background:#0d1013;border:1px solid var(--line);border-radius:999px;padding:8px 12px;margin-right:8px;}
-.grid{max-width:var(--maxw);margin:18px auto 80px;padding:0 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+
+/* 🟢 การปรับปรุง: Card Grid ให้ยืดหยุ่นกว่าเดิมบนมือถือ */
+.grid{max-width:var(--maxw);margin:18px auto 80px;padding:0 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+@media (max-width: 600px) {
+    /* บนมือถือขนาดเล็ก กำหนดคอลัมน์เดียวและขนาดเล็กกว่า */
+    .grid{grid-template-columns:repeat(auto-fill,minmax(90%,1fr));justify-content:center;padding:0 10px;margin-left:auto;margin-right:auto;}
+    .card{max-width:380px;margin:0 auto;} /* จำกัดความกว้าง Card เพื่อความสวยงาม */
+}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;cursor:pointer;position:relative;transition:transform .08s ease, box-shadow .08s ease}
 .card:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.25)}.thumb{background:#0b0e11;aspect-ratio:16/10;object-fit:cover;width:100%;display:block}
 .ct{padding:14px;display:flex;flex-direction:column;gap:10px}.title{font-weight:800}.muted{opacity:.8;color:var(--muted);font-size:.92rem}.price{font-weight:900}
@@ -41,40 +50,178 @@ input,select{width:100%;padding:10px 12px;background:#0d1013;border:1px solid va
 .ribbon{position:absolute;top:12px;left:-36px;transform:rotate(-20deg);background:#b91c1c;color:#fff;padding:6px 56px;border:1px solid #ef4444;font-weight:900;box-shadow:0 6px 16px rgba(0,0,0,.4)}
 .newtag{position:absolute;top:12px;right:12px;background:#059669;color:#fff;padding:6px 10px;border-radius:10px;border:1px solid #10b981;font-weight:900}
 .empty{opacity:.7;text-align:center}
-.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:100}.lightbox.open{display:flex}
-.lb{max-width:min(96vw,1180px);max-height:92vh;background:#0b0e11;border:1px solid var(--line);border-radius:16px;overflow:hidden;color:var(--white)}
+
+/* 🟢 การปรับปรุง Lightbox สำหรับ Desktop */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:100;padding:10px}.lightbox.open{display:flex}
+.lb{max-width:min(96vw,1280px); /* ขยายความกว้างสูงสุดของ Lightbox */ max-height:98vh;background:#0b0e11;border:1px solid var(--line);border-radius:16px;overflow:hidden;color:var(--white)}
 .lb-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line)}
-.lb-body{display:grid;grid-template-columns:1.25fr .75fr;gap:14px;padding:14px}
-.lb-main{height:min(64vh,720px);background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;overflow:hidden;padding-bottom:10px;}
+
+/* *** โค้ดใหม่: จัด Layout เป็น 2 แถวหลัก (Row) ใน Desktop *** */
+.lb-body{
+    display: flex; /* ใช้ Flexbox เพื่อจัดเรียงส่วนหลัก */
+    flex-direction: column; 
+    gap: 14px;
+    padding: 14px;
+}
+
+/* 🟢 ส่วนบน: Main Image และ Thumbnails */
+.lb-top-section {
+    display: grid;
+    /* Main Image: 3 ส่วน, Thumbnails: 1 ส่วน */
+    grid-template-columns: 3fr 1fr; 
+    gap: 14px;
+}
+/* 🟢 ส่วนล่าง: Specs และ Description */
+.lb-bottom-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* แบ่งเป็น 2 คอลัมน์สำหรับ Spec และ Desc */
+    gap: 14px;
+}
+
+.lb-main{
+    height: 70vh; /* เพิ่มความสูงของรูปภาพหลักให้ใหญ่ขึ้น */
+    max-height: 720px;
+    background:#000;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    border-radius:10px;
+    overflow:hidden;
+    padding-bottom:10px;
+}
 .lb-main img{max-width:100%;height:auto;max-height:100%;object-fit:contain}
-.lb-thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px}
-.lb-thumbs img{width:100%;height:70px;object-fit:cover;border:2px solid var(--line);border-radius:8px;cursor:pointer}
+
+/* ปรับ Thumbnails ให้เรียงเป็นคอลัมน์ด้านขวา (อยู่ใน lb-top-section) */
+.lb-thumbs-wrapper {
+    display: flex;
+    flex-direction: column; /* เรียงภาพย่อยเป็นแนวตั้ง */
+    gap: 8px;
+    max-height: 70vh; /* จำกัดความสูงตามภาพหลัก */
+    overflow-y: auto; /* ให้ Scroll ได้หากภาพเยอะ */
+    padding-right: 5px; /* เว้นระยะจาก Scrollbar */
+}
+.lb-thumbs img{
+    width:100%;
+    height:auto; /* ปรับให้ภาพย่อยปรับความสูงตามสัดส่วน */
+    aspect-ratio: 1 / 1; /* บังคับให้เป็นสี่เหลี่ยมจตุรัส */
+    object-fit:cover;
+    border:2px solid var(--line);
+    border-radius:8px;
+    cursor:pointer
+}
 .lb-thumbs img:hover{border-color:#fff} 
-.xbtn{background:#0d1013;color:var(--white);border:1px solid var(--line);border-radius:999px;padding:6px 10px;cursor:pointer}
-footer.f{max-width:var(--maxw);margin:24px auto 60px;color:var(--muted);padding:0 16px}
+
+/* 🟢 การปรับปรุง Lightbox สำหรับ Mobile (จอเล็กกว่า 800px) */
+@media (max-width: 800px) {
+    .lb-body {
+        flex-direction: column; /* กลับเป็นแนวตั้ง */
+        padding: 10px;
+        gap: 10px;
+    }
+    .lb-top-section {
+        grid-template-columns: 1fr; /* กลับเป็น 1 คอลัมน์ */
+        gap: 10px;
+    }
+    .lb-bottom-section {
+        grid-template-columns: 1fr; /* กลับเป็น 1 คอลัมน์ */
+        gap: 10px;
+    }
+    .lb-main{height:40vh;max-height:unset;} /* ลดความสูงของรูปหลัก */
+    .lb-thumbs-wrapper {
+        flex-direction: row; /* ภาพย่อยเรียงเป็นแถวแนวนอน */
+        overflow-x: auto; /* ให้ Scroll แนวนอน */
+        max-height: 100px;
+        padding-right: 0;
+    }
+    .lb-thumbs-wrapper img {
+        width: 80px; /* กำหนดความกว้างบนมือถือ */
+        height: 80px;
+        flex-shrink: 0; /* ไม่ให้ภาพย่อขนาด */
+    }
+}
+
+/* ลบโค้ดเดิมที่กำหนด min-width ใน HTML ออก แต่กำหนดให้ยืดหยุ่น */
+header div[style*="min-width"] {
+    min-width: unset !important; /* ยกเลิกการตั้งค่า min-width เดิม */
+    width: auto; /* ให้ความกว้างปรับได้ */
+}
+
+/* 🟢 การปรับปรุง Header สำหรับ Mobile (สำคัญ) */
+@media (max-width: 900px) {
+    header .wrap{padding:10px 16px 15px;}
+    header .header-content{
+        flex-direction: column; /* บังคับให้ส่วนหลักเป็นแนวตั้ง */
+        align-items: flex-start;
+        gap: 10px;
+    }
+    header .row{width:100%;}
+    
+    header .grow{width:100%;}
+    header .sub{display:none;} /* ซ่อนรายละเอียดที่ไม่จำเป็นบนมือถือ */
+    
+    /* บังคับให้กลุ่มฟิลเตอร์เรียงเป็นคอลัมน์ และทุกฟิลเตอร์ใช้พื้นที่เต็ม */
+    .filter-group {
+        display: flex;
+        flex-direction: column; /* เรียง Search/Selects เป็นแนวตั้ง */
+        width: 100%;
+        gap: 10px; /* ช่องว่างระหว่าง Search/Selects */
+    }
+    .filter-group > div {
+        width: 100%; /* ให้ input/select ใช้พื้นที่เต็มความกว้าง */
+    }
+
+}
+
+/* 🟢 โค้ดสำหรับจัดกลุ่ม Logo/Title ใน Header (Desktop) */
+@media (min-width: 901px) {
+    .wrap .header-content{
+        display:flex;
+        align-items:center;
+        gap:var(--gap);
+    }
+    .wrap .logo-info{
+        display:flex;
+        align-items:center;
+        width:auto;
+    }
+    .wrap .filter-group{
+        display:flex;
+        gap:var(--gap);
+        width:auto;
+    }
+}
 </style>
 </head>
 <body>
 <img class="banner" src="images/banner.png" alt="Banner">
 <header>
-<div class="wrap row">
-<img class="logo" src="images/logo.png" alt="โลโก้ร้าน">
-<div class="grow">
-<div style="font-weight:900">JUST COM</div>
-<div class="sub">จำหน่ายและรับซื้ออุปกรณ์คอมพิวเตอร์ มือหนึ่ง-มือสอง • ตอนนี้คุณอยู่หมวด: <span id="currentCat">สินค้าทั้งหมด</span></div>
-</div>
-<div style="min-width:240px"><input id="q" placeholder="ค้นหา: ยี่ห้อ/แบรนด์/รุ่น/..."></div>
-<div style="min-width:160px">
-<select id="cat">
-<option value="">ทุกหมวดหมู่</option><option>การ์ดจอ (GPU)</option><option>ซีพียู (CPU)</option><option>เมนบอร์ด (Mainboard)</option><option>แรม (RAM)</option>
-<option>หน่วยความจำ (SSD/HDD)</option><option>พาวเวอร์ซัพพลาย (PSU)</option><option>ระบบระบายความร้อน/</option><option>เซ็ทรวม/อื่นๆ</option>
-</select>
-</div>
-<div style="min-width:160px">
-<select id="status">
-<option value="">สถานะ: ทั้งหมด</option><option value="active">พร้อมขาย</option><option value="hidden">ซ่อน</option><option value="sold">ขายแล้ว</option>
-</select>
-</div>
+<div class="wrap">
+    <div class="row header-content" style="width:100%;">
+        
+        <div class="logo-info">
+            <img class="logo" src="images/logo.png" alt="โลโก้ร้าน">
+            <div class="grow" style="margin-left:10px;">
+                <div style="font-weight:900">JUST COM</div>
+                <div class="sub">จำหน่ายและรับซื้ออุปกรณ์คอมพิวเตอร์ มือหนึ่ง-มือสอง • ตอนนี้คุณอยู่หมวด: <span id="currentCat">สินค้าทั้งหมด</span></div>
+            </div>
+        </div>
+        
+        <div class="filter-group grow">
+            <div><input id="q" placeholder="ค้นหา: ยี่ห้อ/แบรนด์/รุ่น/..."></div>
+            <div>
+                <select id="cat">
+                    <option value="">ทุกหมวดหมู่</option><option>การ์ดจอ (GPU)</option><option>ซีพียู (CPU)</option><option>เมนบอร์ด (Mainboard)</option><option>แรม (RAM)</option>
+                    <option>หน่วยความจำ (SSD/HDD)</option><option>พาวเวอร์ซัพพลาย (PSU)</option><option>ระบบระบายความร้อน/</option><option>เซ็ทรวม/อื่นๆ</option>
+                </select>
+            </div>
+            <div>
+                <select id="status">
+                    <option value="">สถานะ: ทั้งหมด</option><option value="active">พร้อมขาย</option><option value="hidden">ซ่อน</option><option value="sold">ขายแล้ว</option>
+                </select>
+            </div>
+        </div>
+    </div>
 </div>
 </header>
 <div class="notice"><span class="chip">รายการสินค้า</span><span class="chip">สินค้าที่ขายแล้วจะแสดงที่ด้านล่างสุด</span></div>
@@ -83,21 +230,29 @@ footer.f{max-width:var(--maxw);margin:24px auto 60px;color:var(--muted);padding:
 <footer class="f">© Copyright 2025 All Rights Reserved By Just Com.</footer>
 
 <div id="lightbox" class="lightbox" role="dialog" aria-modal="true">
-<div class="lb">
-<div class="lb-head"><div id="lb-title" style="font-weight:900"></div><button id="lb-close" class="xbtn">ปิด</button></div>
-<div class="lb-body">
-<div>
-    <div class="lb-main"><img id="lb-mainimg" alt=""></div>
-    <div id="lb-thumbs" class="lb-thumbs" style="margin-top:10px"></div>
-</div>
-<div>
-    <div id="lb-spec" class="sub"></div>
-    <div id="lb-desc" style="margin-top:10px;white-space:pre-wrap"></div>
-</div>
-</div>
-</div>
-</div>
+    <div class="lb">
+        <div class="lb-head"><div id="lb-title" style="font-weight:900"></div><button id="lb-close" class="xbtn">ปิด</button></div>
+        <div class="lb-body">
+            
+            <div class="lb-top-section">
+                <div class="lb-main"><img id="lb-mainimg" alt=""></div>
+                
+                <div id="lb-thumbs" class="lb-thumbs-wrapper">
+                    </div>
+            </div>
 
+            <div class="lb-bottom-section">
+                <div>
+                    <div id="lb-spec" class="sub"></div>
+                </div>
+                <div>
+                    <div id="lb-desc" style="white-space:pre-wrap"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 <script>
 const CONFIG={
 mode:"csv",
@@ -135,11 +290,11 @@ const primaryImg = item["ลิงก์รูปภาพหลัก"];
 
 // **แก้ไขชื่อคอลัมน์ให้ตรงกับ CSV ของคุณ (Image 1, Image 2, ...)**
 const additionalImgs = [
-    item["Image 1"], // แก้ไขตรงนี้
-    item["Image 2"], // แก้ไขตรงนี้
-    item["Image 3"], // แก้ไขตรงนี้
-    item["Image 4"], // แก้ไขตรงนี้
-    item["Image 5"]  // แก้ไขตรงนี้
+    item["Image 1"], // แก้ไขตรงนี้
+    item["Image 2"], // แก้ไขตรงนี้
+    item["Image 3"], // แก้ไขตรงนี้
+    item["Image 4"], // แก้ไขตรงนี้
+    item["Image 5"]  // แก้ไขตรงนี้
 ].filter(Boolean).map(u => u.trim());
 
 const imgs = [primaryImg, ...additionalImgs].filter(Boolean);
@@ -153,16 +308,16 @@ const im=document.createElement("img");
 im.src=u; 
 im.alt="img"+i;
 im.addEventListener("click",()=>{
-    this.main.src=u;
-    Array.from(this.thumbs.children).forEach(thumb => {
-        thumb.style.borderColor = 'var(--line)'; 
-    });
-    im.style.borderColor = 'var(--white)';
+    this.main.src=u;
+    Array.from(this.thumbs.children).forEach(thumb => {
+        thumb.style.borderColor = 'var(--line)'; 
+    });
+    im.style.borderColor = 'var(--white)';
 });
 this.thumbs.appendChild(im);
 
 if (i === 0) {
-    im.style.borderColor = 'var(--white)';
+    im.style.borderColor = 'var(--white)';
 }
 
 });
@@ -178,12 +333,12 @@ function initLightbox(){lb.root=document.getElementById("lightbox");lb.main=docu
 function render(items){const grid=document.getElementById("grid");const empty=document.getElementById("empty");grid.innerHTML="";if(!items.length){empty.style.display="block";return;}empty.style.display="none";items.forEach(item=>{if((item["สถานะประกาศ (active|hidden|sold)"]||"").toLowerCase()==="hidden")return;
 // **แก้ไขชื่อคอลัมน์ให้ตรงกับ CSV ของคุณ (Image 1, Image 2, ...)**
 const allImgs = [
-    item["ลิงก์รูปภาพหลัก"], 
-    item["Image 1"], // แก้ไขตรงนี้
-    item["Image 2"], // แก้ไขตรงนี้
-    item["Image 3"], // แก้ไขตรงนี้
-    item["Image 4"], // แก้ไขตรงนี้
-    item["Image 5"]  // แก้ไขตรงนี้
+    item["ลิงก์รูปภาพหลัก"], 
+    item["Image 1"], // แก้ไขตรงนี้
+    item["Image 2"], // แก้ไขตรงนี้
+    item["Image 3"], // แก้ไขตรงนี้
+    item["Image 4"], // แก้ไขตรงนี้
+    item["Image 5"]  // แก้ไขตรงนี้
 ].filter(Boolean).map(u => u.trim());
 
 const cover=allImgs[0]||""; 
