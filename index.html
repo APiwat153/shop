@@ -6,24 +6,25 @@
 <title>JUST COM — แคตตาล็อกสินค้า</title>
 <meta name="description" content="หน้ารวมสินค้า JUST COM พร้อมค้นหา แยกหมวด ป้ายขายแล้ว และปุ่มสั่งซื้อเด้งไปแชทเพจ">
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="/favicon.ico"> 
 <style>
 :root{--bg:#0f1114;--card:#151a1f;--muted:#93a1b3;--line:#222a33;--white:#eaf0f7;--radius:16px;--gap:16px;--maxw:1200px;}
 *{box-sizing:border-box}html,body{
- margin:0;
- font-family:'Prompt', ui-sans-serif, system-ui, 'Segoe UI', Roboto, 'Noto Sans Thai', sans-serif;
- background:var(--bg);
- color:var(--white);
+margin:0;
+font-family:'Prompt', ui-sans-serif, system-ui, 'Segoe UI', Roboto, 'Noto Sans Thai', sans-serif;
+background:var(--bg);
+color:var(--white);
 }
 select {
- background-color: #ffffff; /* พื้นหลังช่อง select */
- color: #000000; /* สีตัวอักษร */
- border: 1px solid #ccc;  /* เส้นขอบ */
- padding: 8px;
- border-radius: 6px;
+background-color: #ffffff;
+color: #000000;
+border: 1px solid #ccc;
+padding: 8px;
+border-radius: 6px;
 }
 select option {
- background-color: #ffffff; /* พื้นหลังตอน dropdown */
- color: #000000; /* สีตัวอักษร */
+background-color: #ffffff;
+color: #000000;
 }
 a{color:inherit;text-decoration:none}header{position:sticky;top:0;z-index:10;background:rgba(15,17,20,.75);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--line)}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:10px 16px}.row{display:flex;gap:var(--gap);flex-wrap:wrap;align-items:center}.grow{flex:1}.logo{height:36px;width:auto}.sub{opacity:.8;font-size:.9rem}
@@ -43,156 +44,205 @@ input,select{width:100%;padding:10px 12px;background:#0d1013;border:1px solid va
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:100}.lightbox.open{display:flex}
 .lb{max-width:min(96vw,1180px);max-height:92vh;background:#0b0e11;border:1px solid var(--line);border-radius:16px;overflow:hidden;color:var(--white)}
 .lb-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line)}
-.lb-body{display:grid;grid-template-columns:1.25fr .75fr;gap:14px;padding:14px}.lb-main{height:min(64vh,720px);background:#000;display:flex;align-items:center;justify-content:center;border-radius:10px;overflow:hidden}
-.lb-main img{max-width:100%;max-height:100%;object-fit:contain}.lb-thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px}
-.lb-thumbs img{width:100%;height:70px;object-fit:cover;border:2px solid var(--line);border-radius:8px;cursor:pointer}.xbtn{background:#0d1013;color:var(--white);border:1px solid var(--line);border-radius:999px;padding:6px 10px;cursor:pointer}
+.lb-body{display:grid;grid-template-columns:1.25fr .75fr;gap:14px;padding:14px}
+.lb-main{height:min(64vh,720px);background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;overflow:hidden;padding-bottom:10px;}
+.lb-main img{max-width:100%;height:auto;max-height:100%;object-fit:contain}
+.lb-thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px}
+.lb-thumbs img{width:100%;height:70px;object-fit:cover;border:2px solid var(--line);border-radius:8px;cursor:pointer}
+.lb-thumbs img:hover{border-color:#fff} 
+.xbtn{background:#0d1013;color:var(--white);border:1px solid var(--line);border-radius:999px;padding:6px 10px;cursor:pointer}
 footer.f{max-width:var(--maxw);margin:24px auto 60px;color:var(--muted);padding:0 16px}
 </style>
 </head>
 <body>
 <img class="banner" src="images/banner.png" alt="Banner">
 <header>
- <div class="wrap row">
- <img class="logo" src="images/logo.png" alt="โลโก้ร้าน">
- <div class="grow">
- <div style="font-weight:900">JUST COM</div>
- <div class="sub">จำหน่ายและรับซื้ออุปกรณ์คอมพิวเตอร์ มือหนึ่ง-มือสอง • ตอนนี้คุณอยู่หมวด: <span id="currentCat">สินค้าทั้งหมด</span></div>
- </div>
- <div style="min-width:240px"><input id="q" placeholder="ค้นหา: ยี่ห้อ/แบรนด์/รุ่น/..."></div>
- <div style="min-width:160px">
- <select id="cat">
- <option value="">ทุกหมวดหมู่</option><option>การ์ดจอ (GPU)</option><option>ซีพียู (CPU)</option><option>เมนบอร์ด (Mainboard)</option><option>แรม (RAM)</option>
- <option>หน่วยความจำ (SSD/HDD)</option><option>พาวเวอร์ซัพพลาย (PSU)</option><option>ระบบระบายความร้อน/</option><option>เซ็ทรวม/อื่นๆ</option>
- </select>
- </div>
- <div style="min-width:160px">
- <select id="status">
- <option value="">สถานะ: ทั้งหมด</option><option value="active">พร้อมขาย</option><option value="hidden">ซ่อน</option><option value="sold">ขายแล้ว</option>
- </select>
- </div>
- </div>
+<div class="wrap row">
+<img class="logo" src="images/logo.png" alt="โลโก้ร้าน">
+<div class="grow">
+<div style="font-weight:900">JUST COM</div>
+<div class="sub">จำหน่ายและรับซื้ออุปกรณ์คอมพิวเตอร์ มือหนึ่ง-มือสอง • ตอนนี้คุณอยู่หมวด: <span id="currentCat">สินค้าทั้งหมด</span></div>
+</div>
+<div style="min-width:240px"><input id="q" placeholder="ค้นหา: ยี่ห้อ/แบรนด์/รุ่น/..."></div>
+<div style="min-width:160px">
+<select id="cat">
+<option value="">ทุกหมวดหมู่</option><option>การ์ดจอ (GPU)</option><option>ซีพียู (CPU)</option><option>เมนบอร์ด (Mainboard)</option><option>แรม (RAM)</option>
+<option>หน่วยความจำ (SSD/HDD)</option><option>พาวเวอร์ซัพพลาย (PSU)</option><option>ระบบระบายความร้อน/</option><option>เซ็ทรวม/อื่นๆ</option>
+</select>
+</div>
+<div style="min-width:160px">
+<select id="status">
+<option value="">สถานะ: ทั้งหมด</option><option value="active">พร้อมขาย</option><option value="hidden">ซ่อน</option><option value="sold">ขายแล้ว</option>
+</select>
+</div>
+</div>
 </header>
 <div class="notice"><span class="chip">รายการสินค้า</span><span class="chip">สินค้าที่ขายแล้วจะแสดงที่ด้านล่างสุด</span></div>
 <section class="grid" id="grid"></section>
 <div id="empty" class="empty" style="display:none">ไม่พบสินค้าตามหัวข้อ</div>
 <footer class="f">© Copyright 2025 All Rights Reserved By Just Com.</footer>
+
 <div id="lightbox" class="lightbox" role="dialog" aria-modal="true">
- <div class="lb">
- <div class="lb-head"><div id="lb-title" style="font-weight:900"></div><button id="lb-close" class="xbtn">ปิด</button></div>
- <div class="lb-body">
- <div><div class="lb-main"><img id="lb-mainimg" alt=""></div><div id="lb-thumbs" class="lb-thumbs" style="margin-top:10px"></div></div>
- <div><div id="lb-spec" class="sub"></div><div id="lb-desc" style="margin-top:10px;white-space:pre-wrap"></div></div>
- </div>
- </div>
+<div class="lb">
+<div class="lb-head"><div id="lb-title" style="font-weight:900"></div><button id="lb-close" class="xbtn">ปิด</button></div>
+<div class="lb-body">
+<div>
+    <div class="lb-main"><img id="lb-mainimg" alt=""></div>
+    <div id="lb-thumbs" class="lb-thumbs" style="margin-top:10px"></div>
 </div>
+<div>
+    <div id="lb-spec" class="sub"></div>
+    <div id="lb-desc" style="margin-top:10px;white-space:pre-wrap"></div>
+</div>
+</div>
+</div>
+</div>
+
 <script>
 const CONFIG={
-    mode:"csv",
-    csvPath:"data/justcom_inventory.csv", // กลับไปใช้พาธเดิม
-    gsheetCsvUrl:"",
-    defaultOrderTarget:"facebook",
-    facebookPageUrl:"https://m.me/justcomth",
-    lineUrl:"https://line.me/R/ti/p/~your_line_id"
+mode:"csv",
+csvPath:"../data/justcom_inventory.csv", // ตรวจสอบพาธนี้!
+gsheetCsvUrl:"",
+defaultOrderTarget:"facebook",
+facebookPageUrl:"https://m.me/justcomth",
+lineUrl:"https://line.me/R/ti/p/~your_line_id"
 };
 
-// ** ข้อมูลสำรอง CSV ของคุณ หากโหลดไฟล์จริงไม่สำเร็จ **
-const FALLBACK_CSV_CONTENT = `ชื่อสินค้า,ยี่ห้อ/แบรนด์,รุ่นย่อย,หมวดหมู่,ราคา (THB),จำนวนคงเหลือ,สถานะประกาศ (active|hidden|sold),ลิงก์รูปภาพหลัก,ลิงก์รูปภาพเพิ่มเติม (คั่นด้วย ,),รายละเอียดเพิ่มเติม,รับประกัน (วัน),วันที่รับของ (YYYY-MM-DD),อัปเดตล่าสุด (YYYY-MM-DD HH:MM),แท็ก (คั่นด้วย ,),SKU,ปุ่มสั่งซื้อให้เด้งไปที่ (facebook|line|custom_url),ลิงก์โพสต์ Facebook (ถ้ามี),ลิงก์ปลายทางปุ่มสั่งซื้อ (ถ้าเลือก custom_url ให้ใส่ที่นี่),ชิป/ซีรีส์ (ถ้าเป็นการ์ดจอให้ใส่เช่น RTX 3060 Ti / RX 6700 XT),สเปกย่อย (VRAM/ขนาด/สี ฯลฯ),สภาพ
-การ์ดจอ RTX4060 8GB,MSI,Ventus 2X,การ์ดจอ (GPU),8900,3,active,images/4060.jpg,,การ์ดจอสภาพดี ประกันศูนย์ไทย,300,2025-01-20,2025-10-09 12:00,new,SKU-4060,facebook,https://www.facebook.com/justcomth,,RTX 4060,8GB GDDR6,สวยมาก
-การ์ดจอ RTX3070 8GB,Gigabyte,Eagle,การ์ดจอ (GPU),11900,0,sold,images/3070.jpg,,ขายแล้ว เหมาะเล่นเกม 2K,30,2025-01-15,2025-10-08 11:00,,SKU-3070,line,,RTX 3070,8GB GDDR6,ใช้งานปกติ
-เมนบอร์ด B650M,ASUS,PRIME B650M-A II,เมนบอร์ด (Mainboard),5500,1,active,images/b650.jpg,,เมนบอร์ดใหม่ ใช้งานได้กับ CPU AMD AM5,365,2025-09-01,2025-10-09 13:30,new,SKU-B650M,custom_url,,https://shopee.co.th/b650m,B650,Socket AM5,ใหม่มาก
-CPU AMD R5 7600X,AMD,Ryzen 5 7600X,ซีพียู (CPU),6990,2,active,images/7600x.jpg,,ซีพียู AM5 ประสิทธิภาพสูง,30,2025-08-01,2025-10-09 10:00,,SKU-7600X,facebook,https://www.facebook.com/justcomth,7600X,Socket AM5/6 Cores 12 Threads,สวย
-RAM DDR4 16GB,Kingston,Fury Beast,แรม (RAM),1500,4,active,images/ram.jpg,,แรมคู่ 8GBx2 (รวม 16GB) 3200MHz,180,2025-10-01,2025-10-09 09:00,,SKU-RAM,line,,DDR4,3200MHz (8GBx2),สภาพดี
-พาวเวอร์ซัพพลาย 850W,Cooler Master,MWE Gold V2,พาวเวอร์ซัพพลาย (PSU),2900,1,hidden,images/psu.jpg,,80+ Gold ประกันศูนย์ไทย,365,2025-07-01,2025-10-09 08:00,,SKU-PSU,facebook,,850W,80+ Gold Full Modular,ใช้งานปกติ`;
-// ** สิ้นสุดข้อมูลสำรอง **
 
 function csvToArray(str,delim=","){const rows=str.split("\n").filter(x=>x.trim().length);if(!rows.length)return[];const headers=rows.shift().split(delim).map(h=>h.trim());return rows.map(row=>{const cols=[];let cur="",inQ=false;for(let i=0;i<row.length;i++){const c=row[i];if(c=='"'){inQ=!inQ;}else if(c===delim && !inQ){cols.push(cur);cur="";}else{cur+=c;}}cols.push(cur);const obj={};headers.forEach((h,i)=>obj[h]=(cols[i]??"").trim());return obj;});}
 function fmt(n){try{return Number(n).toLocaleString('th-TH');}catch(e){return n;}}
-function listify(s){return (s||"").split(",").map(x=>x.trim()).filter(Boolean);}
 function parseDate(s){if(!s) return 0;const t=s.trim().replace(" ","T");const d=new Date(t);return isNaN(d.getTime())?0:d.getTime();}
 function updateCurrentCat(){const cur=document.getElementById("cat").value||"";document.getElementById("currentCat").textContent=cur||"สินค้าทั้งหมด";}
 function pickBuyLink(item) {
- // ✅ ลิงก์เพจหลัก JUST COM
- const PAGE_URL = "https://www.facebook.com/share/1B8mNcdPZb/?mibextid=wwXIfr";
-
- // ✅ อ่านค่าปุ่มปลายทางจาก CSV (ป้องกันชื่อคอลัมน์ไม่ตรง 100%)
- const dest = (
- item["ปุ่มสั่งซื้อให้เด้งไปที่ (facebook|line|custom_url)"] ||
- item["ปุ่มสั่งซื้อให้เด้งไปที่"] ||
- CONFIG.defaultOrderTarget
- ).toLowerCase();
-
- // ✅ ดึงลิงก์จาก CSV
- const fb = item["ลิงก์โพสต์ Facebook (ถ้ามี)"] || PAGE_URL;
- const custom = item["ลิงก์ปลายทางปุ่มสั่งซื้อ (ถ้าเลือก custom_url ให้ใส่ที่นี่)"] || "";
- // ✅ ตัดสินใจปลายทางลิงก์
- if (dest === "facebook") return fb;
- if (dest === "line") return CONFIG.lineUrl;
- if (dest === "custom_url") return custom || PAGE_URL;
-
- // ✅ fallback ถ้าไม่มีอะไรเลย
- return PAGE_URL;
+const PAGE_URL = "https://www.facebook.com/share/1B8mNcdPZb/?mibextid=wwXIfr";
+const dest = (
+item["ปุ่มสั่งซื้อให้เด้งไปที่ (facebook|line|custom_url)"] ||
+item["ปุ่มสั่งซื้อให้เด้งไปที่"] ||
+CONFIG.defaultOrderTarget
+).toLowerCase();
+const fb = item["ลิงก์โพสต์ Facebook (ถ้ามี)"] || PAGE_URL;
+const custom = item["ลิงก์ปลายทางปุ่มสั่งซื้อ (ถ้าเลือก custom_url ให้ใส่ที่นี่)"] || "";
+if (dest === "facebook") return fb;
+if (dest === "line") return CONFIG.lineUrl;
+if (dest === "custom_url") return custom || PAGE_URL;
+return PAGE_URL;
 }
 function isNewItem(item){const tags=(item["แท็ก (คั่นด้วย ,)"]||"").toLowerCase();if(tags.includes("new"))return true;const d=item["วันที่รับของ (YYYY-MM-DD)"]||"";if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return false;const now=new Date(),dt=new Date(d+"T00:00:00");const diff=(now-dt)/86400000;return diff<=14;}
-const lb={root:null,main:null,thumbs:null,title:null,spec:null,desc:null,open(item){const imgs=[item["ลิงก์รูปภาพหลัก"],...(item["ลิงก์รูปภาพเพิ่มเติม (คั่นด้วย ,)"]||"").split(",").map(s=>s.trim()).filter(Boolean)].filter(Boolean);this.title.textContent=item["ชื่อสินค้า"]||item["รุ่นย่อย"]||item["SKU"]||"";this.main.src=imgs[0]||"";this.thumbs.innerHTML="";imgs.forEach((u,i)=>{const im=document.createElement("img");im.src=u;im.alt="img"+i;im.addEventListener("click",()=>this.main.src=u);this.thumbs.appendChild(im);});this.spec.innerHTML=[item["ยี่ห้อ/แบรนด์"]?`<div><b>แบรนด์:</b> ${item["ยี่ห้อ/แบรนด์"]}</div>`:"",item["รุ่นย่อย"]?`<div><b>รุ่น:</b> ${item["รุ่นย่อย"]}</div>`:"",item["ชิป/ซีรีส์ (ถ้าเป็นการ์ดจอให้ใส่เช่น RTX 3060 Ti / RX 6700 XT)"]?`<div><b>ชิป/ซีรีส์:</b> ${item["ชิป/ซีรีส์ (ถ้าเป็นการ์ดจอให้ใส่เช่น RTX 3060 Ti / RX 6700 XT)"]}</div>`:"",item["สเปกย่อย (VRAM/ขนาด/สี ฯลฯ)"]?`<div><b>สเปก:</b> ${item["สเปกย่อย (VRAM/ขนาด/สี ฯลฯ)"]}</div>`:"",item["สภาพ"]?`<div><b>สภาพ:</b> ${item["สภาพ"]}</div>`:"",item["รับประกัน (วัน)"]?`<div><b>ประกัน:</b> ${item["รับประกัน (วัน)"]} วัน</div>`:"",item["ราคา (THB)"]?`<div><b>ราคา:</b> ${fmt(item["ราคา (THB)"])} ฿</div>`:""] .filter(Boolean).join("");this.desc.textContent=item["รายละเอียดเพิ่มเติม"]||"";this.root.classList.add("open");},close(){this.root.classList.remove("open");this.main.src="";this.thumbs.innerHTML="";this.spec.innerHTML="";this.desc.textContent="";}};
+
+// OBJECT และฟังก์ชันสำหรับจัดการ LIGHTBOX GALLERY
+const lb={root:null,main:null,thumbs:null,title:null,spec:null,desc:null,open(item){
+const primaryImg = item["ลิงก์รูปภาพหลัก"];
+
+// **แก้ไขชื่อคอลัมน์ให้ตรงกับ CSV ของคุณ (Image 1, Image 2, ...)**
+const additionalImgs = [
+    item["Image 1"], // แก้ไขตรงนี้
+    item["Image 2"], // แก้ไขตรงนี้
+    item["Image 3"], // แก้ไขตรงนี้
+    item["Image 4"], // แก้ไขตรงนี้
+    item["Image 5"]  // แก้ไขตรงนี้
+].filter(Boolean).map(u => u.trim());
+
+const imgs = [primaryImg, ...additionalImgs].filter(Boolean);
+
+this.title.textContent=item["ชื่อสินค้า"]||item["รุ่นย่อย"]||item["SKU"]||"";
+this.main.src=imgs[0]||""; 
+this.thumbs.innerHTML="";
+
+imgs.forEach((u,i)=>{
+const im=document.createElement("img");
+im.src=u; 
+im.alt="img"+i;
+im.addEventListener("click",()=>{
+    this.main.src=u;
+    Array.from(this.thumbs.children).forEach(thumb => {
+        thumb.style.borderColor = 'var(--line)'; 
+    });
+    im.style.borderColor = 'var(--white)';
+});
+this.thumbs.appendChild(im);
+
+if (i === 0) {
+    im.style.borderColor = 'var(--white)';
+}
+
+});
+
+this.spec.innerHTML=[item["ยี่ห้อ/แบรนด์"]?`<div><b>แบรนด์:</b> ${item["ยี่ห้อ/แบรนด์"]}</div>`:"",item["รุ่นย่อย"]?`<div><b>รุ่น:</b> ${item["รุ่นย่อย"]}</div>`:"",item["ชิป/ซีรีส์ (ถ้าเป็นการ์ดจอให้ใส่เช่น RTX 3060 Ti / RX 6700 XT)"]?`<div><b>ชิป/ซีรีส์:</b> ${item["ชิป/ซีรีส์ (ถ้าเป็นการ์ดจอให้ใส่เช่น RTX 3060 Ti / RX 6700 XT)"]}</div>`:"",item["สเปกย่อย (VRAM/ขนาด/สี ฯลฯ)"]?`<div><b>สเปก:</b> ${item["สเปกย่อย (VRAM/ขนาด/สี ฯลฯ)"]}</div>`:"",item["สภาพ"]?`<div><b>สภาพ:</b> ${item["สภาพ"]}</div>`:"",item["รับประกัน (วัน)"]?`<div><b>ประกัน:</b> ${item["รับประกัน (วัน)"]} วัน</div>`:"",item["ราคา (THB)"]?`<div><b>ราคา:</b> ${fmt(item["ราคา (THB)"])} ฿</div>`:""] .filter(Boolean).join("");
+this.desc.textContent=item["รายละเอียดเพิ่มเติม"]||"";
+this.root.classList.add("open");
+},close(){this.root.classList.remove("open");this.main.src="";this.thumbs.innerHTML="";this.spec.innerHTML="";this.desc.textContent="";}};
+
 function initLightbox(){lb.root=document.getElementById("lightbox");lb.main=document.getElementById("lb-mainimg");lb.thumbs=document.getElementById("lb-thumbs");lb.title=document.getElementById("lb-title");lb.spec=document.getElementById("lb-spec");lb.desc=document.getElementById("lb-desc");document.getElementById("lb-close").addEventListener("click",()=>lb.close());lb.root.addEventListener("click",(e)=>{if(e.target===lb.root)lb.close();});}
-function render(items){const grid=document.getElementById("grid");const empty=document.getElementById("empty");grid.innerHTML="";if(!items.length){empty.style.display="block";return;}empty.style.display="none";items.forEach(item=>{if((item["สถานะประกาศ (active|hidden|sold)"]||"").toLowerCase()==="hidden")return;const imgs=[item["ลิงก์รูปภาพหลัก"],...listify(item["ลิงก์รูปภาพเพิ่มเติม (คั่นด้วย ,)"])].filter(Boolean);const cover=imgs[0]||"";const price=item["ราคา (THB)"]?fmt(item["ราคา (THB)"])+" บาท":"สอบถามราคา";const buy=pickBuyLink(item);const status=(item["สถานะประกาศ (active|hidden|sold)"]||"active").toLowerCase();const badgeList=[];if(item["จำนวนคงเหลือ"])badgeList.push("คงเหลือ "+item["จำนวนคงเหลือ"]);if(item["รับประกัน (วัน)"])badgeList.push("ประกัน "+item["รับประกัน (วัน)"]+" วัน");if(item["ชิป/ซีรีส์ (ถ้าเป็นการ์ดจอให้ใส่เช่น RTX 3060 Ti / RX 6700 XT)"])badgeList.push(item["ชิป/ซีรีส์ (ถ้าเป็นการ์ดจอให้ใส่เช่น RTX 3060 Ti / RX 6700 XT)"]);const card=document.createElement("div");card.className="card";card.innerHTML=`${cover?`<img class="thumb" src="${cover}" alt="">`:`<div class="thumb"></div>`}${status==="sold"?`<div class="ribbon">SOLD OUT</div>`:""}${isNewItem(item)?`<div class="newtag">NEW</div>`:""}<div class="ct"><div class="title">${item["ชื่อสินค้า"]||item["รุ่นย่อย"]||item["SKU"]||"สินค้าไม่ระบุชื่อ"}</div><div class="muted">${item["ยี่ห้อ/แบรนด์"]||""} ${item["รุ่นย่อย"]?("• "+item["รุ่นย่อย"]):""}</div><div class="price">${price}</div><div class="badges">${badgeList.map(b=>`<span class="badge">${b}</span>`).join(" ")}</div><div class="row" style="gap:10px"><a class="buybtn" href="${buy}" target="_blank" rel="noopener" onclick="event.stopPropagation()">สั่งซื้อ<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 12.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></a></div></div>`;card.addEventListener("click",()=>lb.open(item));grid.appendChild(card);});}
+
+// ฟังก์ชันสำหรับแสดงผล Card สินค้า
+function render(items){const grid=document.getElementById("grid");const empty=document.getElementById("empty");grid.innerHTML="";if(!items.length){empty.style.display="block";return;}empty.style.display="none";items.forEach(item=>{if((item["สถานะประกาศ (active|hidden|sold)"]||"").toLowerCase()==="hidden")return;
+// **แก้ไขชื่อคอลัมน์ให้ตรงกับ CSV ของคุณ (Image 1, Image 2, ...)**
+const allImgs = [
+    item["ลิงก์รูปภาพหลัก"], 
+    item["Image 1"], // แก้ไขตรงนี้
+    item["Image 2"], // แก้ไขตรงนี้
+    item["Image 3"], // แก้ไขตรงนี้
+    item["Image 4"], // แก้ไขตรงนี้
+    item["Image 5"]  // แก้ไขตรงนี้
+].filter(Boolean).map(u => u.trim());
+
+const cover=allImgs[0]||""; 
+const price=item["ราคา (THB)"]?fmt(item["ราคา (THB)"])+" บาท":"สอบถามราคา";
+const buy=pickBuyLink(item);
+const status=(item["สถานะประกาศ (active|hidden|sold)"]||"active").toLowerCase();
+const badgeList=[];if(item["จำนวนคงเหลือ"])badgeList.push("คงเหลือ "+item["จำนวนคงเหลือ"]);if(item["รับประกัน (วัน)"])badgeList.push("ประกัน "+item["รับประกัน (วัน)"]+" วัน");if(item["ชิป/ซีรีส์ (ถ้าเป็นการ์ดจอให้ใส่เช่น RTX 3060 Ti / RX 6700 XT)"])badgeList.push(item["ชิป/ซีรีส์ (ถ้าเป็นการ์ดจอให้ใส่เช่น RTX 3060 Ti / RX 6700 XT)"]);const card=document.createElement("div");card.className="card";card.innerHTML=`${cover?`<img class="thumb" src="${cover}" alt="">`:`<div class="thumb"></div>`}${status==="sold"?`<div class="ribbon">SOLD OUT</div>`:""}${isNewItem(item)?`<div class="newtag">NEW</div>`:""}<div class="ct"><div class="title">${item["ชื่อสินค้า"]||item["รุ่นย่อย"]||item["SKU"]||"สินค้าไม่ระบุชื่อ"}</div><div class="muted">${item["ยี่ห้อ/แบรนด์"]||""} ${item["รุ่นย่อย"]?("• "+item["รุ่นย่อย"]):""}</div><div class="price">${price}</div><div class="badges">${badgeList.map(b=>`<span class="badge">${b}</span>`).join(" ")}</div><div class="row" style="gap:10px"><a class="buybtn" href="${buy}" target="_blank" rel="noopener" onclick="event.stopPropagation()">สั่งซื้อ<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 12.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></a></div></div>`;card.addEventListener("click",()=>lb.open(item));grid.appendChild(card);});}
+
 async function boot(){
-    initLightbox();
-    const q=document.getElementById("q");
-    const cat=document.getElementById("cat");
-    const status=document.getElementById("status");
+initLightbox();
+const q=document.getElementById("q");
+const cat=document.getElementById("cat");
+const status=document.getElementById("status");
 
-    async function loadData(){
-        let url=CONFIG.csvPath;
-        if(CONFIG.mode==="gsheet"&&CONFIG.gsheetCsvUrl)url=CONFIG.gsheetCsvUrl;
+async function loadData(){
+let url=CONFIG.csvPath;
+if(CONFIG.mode==="gsheet"&&CONFIG.gsheetCsvUrl)url=CONFIG.gsheetCsvUrl;
+try {
+const res=await fetch(url+(url.includes("?")?"&":"?")+"v="+Date.now());
+if (!res.ok) throw new Error("Failed to fetch CSV");
+const text=await res.text();
+return csvToArray(text);
+} catch (error) {
+console.warn("Error fetching CSV from server. Using fallback data.", error);
+return []; 
+}
+}
 
-        try {
-            // พยายามโหลดจากพาธที่กำหนด
-            const res=await fetch(url+(url.includes("?")?"&":"?")+"v="+Date.now());
-            if (!res.ok) throw new Error("Failed to fetch CSV");
-            const text=await res.text();
-            return csvToArray(text);
-        } catch (error) {
-            // หากโหลดไฟล์จริงไม่สำเร็จ จะใช้ข้อมูลสำรองที่เตรียมไว้
-            console.warn("Error fetching CSV from server. Using fallback data.", error);
-            if (FALLBACK_CSV_CONTENT) {
-                return csvToArray(FALLBACK_CSV_CONTENT);
-            }
-            return []; // คืนค่าเป็น Array ว่างถ้าไม่มีข้อมูลสำรอง
-        }
-    }
+function apply(list){
+const qv=q.value.trim();
+const cv=cat.value.trim();
+const sv=status.value.trim();
+let items=[...list];
 
-    function apply(list){
-        const qv=q.value.trim();
-        const cv=cat.value.trim();
-        const sv=status.value.trim();
-        let items=[...list];
+if(qv)items=items.filter(it=>{const hay=[it["ชื่อสินค้า"],it["ยี่ห้อ/แบรนด์"],it["รุ่นย่อย"],it["หมวดหมู่"],it["แท็ก (คั่นด้วย ,)"],it["SKU"]].join(" ").toLowerCase();return hay.includes(qv.toLowerCase());});
+if(cv)items=items.filter(it=>(it["หมวดหมู่"]||"")===cv);
+if(sv)items=items.filter(it=>(it["สถานะประกาศ (active|hidden|sold)"]||"").toLowerCase()===sv);
 
-        if(qv)items=items.filter(it=>{const hay=[it["ชื่อสินค้า"],it["ยี่ห้อ/แบรนด์"],it["รุ่นย่อย"],it["หมวดหมู่"],it["แท็ก (คั่นด้วย ,)"],it["SKU"]].join(" ").toLowerCase();return hay.includes(qv.toLowerCase());});
-        if(cv)items=items.filter(it=>(it["หมวดหมู่"]||"")===cv);
-        if(sv)items=items.filter(it=>(it["สถานะประกาศ (active|hidden|sold)"]||"").toLowerCase()===sv);
+items.sort((a,b)=>{
+const sa=((a["สถานะประกาศ (active|hidden|sold)"]||"").toLowerCase()==="sold")?1:0;
+const sb=((b["สถานะประกาศ (active|hidden|sold)"]||"").toLowerCase()==="sold")?1:0;
+if(sa!==sb)return sa-sb;
+const da=parseDate(a["อัปเดตล่าสุด (YYYY-MM-DD HH:MM)"])||parseDate(a["วันที่รับของ (YYYY-MM-DD)"]);
+const db=parseDate(b["อัปเดตล่าสุด (YYYY-MM-DD HH:MM)"])||parseDate(b["วันที่รับของ (YYYY-MM-DD)"]);
+if(da!==db)return db-da;
+const pa=Number(a["ราคา (THB)"]||0);
+const pb=Number(b["ราคา (THB)"]||0);
+return pb-pa;
+});
 
-        items.sort((a,b)=>{
-            const sa=((a["สถานะประกาศ (active|hidden|sold)"]||"").toLowerCase()==="sold")?1:0;
-            const sb=((b["สถานะประกาศ (active|hidden|sold)"]||"").toLowerCase()==="sold")?1:0;
-            if(sa!==sb)return sa-sb;
-            const da=parseDate(a["อัปเดตล่าสุด (YYYY-MM-DD HH:MM)"])||parseDate(a["วันที่รับของ (YYYY-MM-DD)"]);
-            const db=parseDate(b["อัปเดตล่าสุด (YYYY-MM-DD HH:MM)"])||parseDate(b["วันที่รับของ (YYYY-MM-DD)"]);
-            if(da!==db)return db-da;
-            const pa=Number(a["ราคา (THB)"]||0);
-            const pb=Number(b["ราคา (THB)"]||0);
-            return pb-pa;
-        });
+render(items);
+}
 
-        render(items);
-    }
-
-    const data=await loadData();
-    apply(data);
-    q.addEventListener("input",()=>apply(data));
-    cat.addEventListener("change",()=>{updateCurrentCat();apply(data);});
-    status.addEventListener("change",()=>apply(data));
-    updateCurrentCat();
+const data=await loadData();
+apply(data);
+q.addEventListener("input",()=>apply(data));
+cat.addEventListener("change",()=>{updateCurrentCat();apply(data);});
+status.addEventListener("change",()=>apply(data));
+updateCurrentCat();
 }
 boot();
 </script>
